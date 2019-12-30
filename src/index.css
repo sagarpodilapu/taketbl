@@ -360,10 +360,9 @@ ul li {
   width: auto;
   height: 120px;
   display: none;
-  background: ##d8d5d5;
-  position: absolute;
+  position: relative;
   z-index: 10030;
-  border: 1px solid ##d8d5d5;
+  border: 1px solid #d8d5d5;
   border-radius: 5px;
 }
 
