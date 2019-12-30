@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="logo192.png" />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+      /* The device with borders */
+      .tablet {
+        border: 1px solid red;
+        position: relative;
+        width: 100%;
+        height: 600px;
+        margin: 0px;
+        border: 16px #f8f8f8 solid;
+        border-top-width: 60px;
+        border-bottom-width: 60px;
+        border-radius: 36px;
+        overflow: scorll;
+      }
+      .tableth {
+        border: 1px solid red;
+        position: relative;
+        width: 100%;
+        height: 600px;
+        margin: 0px;
+        border: 16px #f8f8f8 solid;
+        border-left-width: 60px;
+        border-right-width: 60px;
+        border-radius: 36px;
+        overflow: scorll;
+      }
+
+      /* The horizontal line on the top of the device*/
+      .tablettop {
+        content: "";
+        display: block;
+        width: 5px;
+        height: 60px;
+        position: absolute;
+        left: -30px;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: #333;
+        border-radius: 10px;
+      }
+
+      /* The circle on the bottom of the device*/
+      .tabletround {
+        content: "";
+        display: block;
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        top: 50%;
+        right: -65px;
+        transform: translate(-50%, -50%);
+        background: #333;
+        border-radius: 50%;
+      }
+
+      /* The screen (or content) of the device*/
+      .content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: white;
+        margin: -1px;
+        overflow: auto;
+        background: linear-gradient(
+            -90deg,
+            rgba(0, 0, 0, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+          linear-gradient(-90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          linear-gradient(
+            transparent 3px,
+            #f2f2f2 3px,
+            #f2f2f2 78px,
+            transparent 78px
+          ),
+          linear-gradient(-90deg, #aaa 1px, transparent 1px),
+          linear-gradient(
+            -90deg,
+            transparent 3px,
+            #f2f2f2 3px,
+            #f2f2f2 78px,
+            transparent 78px
+          ),
+          linear-gradient(#aaa 1px, transparent 1px), #f2f2f2;
+        background-size: 4px 4px, 4px 4px, 80px 80px, 80px 80px, 80px 80px,
+          80px 80px, 80px 80px, 80px 80px;
+        width: 100%;
+        height: 100%;
+      }
+      .cscroll {
+        border: 1px orange solid;
+        overflow: hidden;
+        //overflow:scroll;
+      }
+
+      .container {
+        width: 100%;
+      }
+
+      .toolbox {
+      }
+      .hidden {
+        display: inline;
+      }
+      .toolboxitem {
+        list-style-type: none;
+      }
+
+      .section {
+        border: 10px solid lightgrey;
+        border-radius: 5px;
+        cursor: pointer;
+        background: lightgrey;
+        width: 100px;
+        height: 100px;
+        overflow: auto;
+        resize: both;
+        z-index: 10010;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .sectionResize {
+        z-index: 10011;
+        width: 10px;
+        height: 10px;
+        background: blue;
+        position: absolute;
+      }
+
+      .iconsection {
+        color: orange;
+        font-size: 50px;
+      }
+
+      .itable {
+        font-size: 30px;
+        color: orange;
+      }
+      .smallfont {
+        font-size: 12px;
+      }
+      .locked {
+        color: red;
+      }
+
+      .rectangle {
+        width: auto;
+        height: 25px;
+        background-color: orange;
+        margin: 5px;
+        text-align: center;
+      }
+      .oval {
+        border-radius: 50px;
+        background-color: orange;
+        margin: 5px;
+        width: auto;
+        height: 25px;
+        text-align: center;
+      }
+      .rectanglocked {
+        background-color: red;
+      }
+
+      .preffered {
+      }
+      .booked {
+      }
+
+      .info {
+        font-size: 12px;
+        display: inline;
+      }
+      .info > ul > li {
+        list-style-type: none;
+      }
+      /*
+  .table > tr > td {
+    font-style:9px;
+  }*/
+      .rightmenutbl,
+      .rightmenusection {
+        width: auto;
+        height: 120px;
+        display: block;
+        position: absolute;
+        z-index: 10029;
+        border-radius: 5px;
+      }
+
+      .rightmenuUl {
+        margin: 2px;
+        padding: 0;
+        border-radius: 5px;
+      }
+
+      .restaurantinfo > ul {
+        overflow-x: hidden;
+        white-space: nowrap;
+        height: 1em;
+      }
+      .restaurantinfo > ul > li {
+        display: inline;
+      }
+      .btn-cancel {
+        border: 1px solid grey;
+        background-color: grey;
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 5px;
+        height: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+      }
+    </style>
+    <script async src="https://kit.fontawesome.com/8697797e88.js"></script>
+    <script src="admin/floorplan.js"></script>
+
+    <title>floorplan</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-2">
+          <div class="info toolboxitem">
+            <ul style="display:inline;margin:0px;padding:0px;">
+              <li>
+                <span id="RestaurantBlock"></span>
+              </li>
+            </ul>
+          </div>
+          <div id="toolbox" class="toolbox"></div>
+          <div class="info toolboxitem">
+            <ul style="display:inline;margin:0px;padding:0px">
+              <li class="toolboxitem">
+                <span id="FloorPlanInfoBlock"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div class="tableth" onclick="select(event)">
+            <div class="tablettop" onclick="select(event)"></div>
+            <span id="tablettop"></span>
+            <div id="preview"></div>
+            <!--
+          <div class="zoomout">
+              <i class="fas fa-search-minus"></i>
+          </div>
+          //-->
+            <div class="tabletround" onclick="select(event)"></div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="info toolboxitem">
+            <ul style="display:inline;margin:0px;padding:0px;">
+              <li class="toolboxitem">
+                <span id="FloorPlanBlock"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span id="tablemenu"></span>
+    <span id="sectionmenu"></span>
+  </body>
+</html>
