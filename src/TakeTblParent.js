@@ -56,6 +56,7 @@ class TakeTblParent extends React.Component {
           self.handleClick(event);
         }
       } else {
+        console.log("44rr");
         document.removeEventListener("click", fnClick);
       }
     };
@@ -95,9 +96,10 @@ class TakeTblParent extends React.Component {
             rightmenu.style.left = "0px";
           }
         }
+
         return;
       }
-
+      //
       let obj = event.target.getAttribute("selected")
         ? event.target
         : event.target.parentElement &&
@@ -112,14 +114,35 @@ class TakeTblParent extends React.Component {
         let menutype = obj.getAttribute("type");
         let menus = document.querySelectorAll(menulist[menutype]);
         menu = menus[0];
+        let top, left, parentTop, parentLeft, objTop, objLeft;
         if (menu) {
           let menuItem = document.getElementById("m" + obj.id);
           if (!menuItem) {
             let nm = menu.cloneNode(true);
             nm.id = "m" + obj.id;
-            nm.style.top = parseInt(obj.style.top.replace("px", "")) + "px";
-            let left = parseInt(obj.style.left.replace("px", "")) + 35 + "px";
+            objTop = obj.style.top;
+            objLeft = obj.style.left;
+            if (obj.parentElement.id === "content") {
+              top = parseInt(obj.style.top.replace("px", "")) + "px";
+              left = parseInt(obj.style.left.replace("px", "")) + 35 + "px";
+            } else {
+              parentTop = obj.parentElement.style.top;
+              parentLeft = obj.parentElement.style.left;
+              top =
+                parseInt(objTop.replace("px", "")) +
+                parseInt(parentTop.replace("px", "")) +
+                "px";
+              left =
+                parseInt(objLeft.replace("px", "")) +
+                parseInt(parentLeft.replace("px", "")) +
+                35 +
+                "px";
+            }
+
+            nm.style.top = top;
             nm.style.left = left;
+            console.log(top);
+            console.log(left);
             nm.style.display = "block";
             document.getElementById("content").appendChild(nm);
             menuItem = nm;
@@ -127,10 +150,9 @@ class TakeTblParent extends React.Component {
           }
           window.contextmenuSelected = menuItem;
         } else {
-          console.log("entering error1");
         }
       } else {
-        //console.log(event.target)
+        //
 
         window.contextmenuSelected = null;
         document.removeEventListener("click", fnClick);

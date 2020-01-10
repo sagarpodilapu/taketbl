@@ -13,7 +13,7 @@ function getSelectedItem() {
 }
 
 function getcontent() {
-  // console.trace();
+  //
   let previewNode = document.querySelector(".content").cloneNode(true);
   previewNode.id = "previewNode";
   let toast = previewNode.querySelector(".toast");
@@ -38,7 +38,6 @@ function getcontent() {
   isections.forEach(isection => {
     isection.id = "preview" + isection.id;
     isection.style.resize = "none";
-    isection.style.position = "relative";
     let top = parseFloat(isection.style.top.replace("px", "")) + 10 + "px";
     isection.style.top = top;
     isection.removeAttribute("ondragstart");
@@ -47,7 +46,6 @@ function getcontent() {
     isection.removeAttribute("placed");
     isection.style.border = "none";
   });
-  console.log(previewNode);
   return previewNode;
 }
 function gettables() {
@@ -72,8 +70,8 @@ function savefloorplan(msg) {
     published: "",
     startdate: "",
     enddate: "",
-    tables: {},
-    sections: {},
+    tables: gettables(),
+    sections: getsections(),
     content: {}
   };
   floorplan.name = document.querySelector("input[name='fpnname']").value;
@@ -85,21 +83,25 @@ function savefloorplan(msg) {
     "input[name='fppublished']"
   ).checked;
   floorplan.content = document.querySelector("#tablettop").innerHTML;
-  /*console.log(tables);
-  console.log(sections);
-  console.log(merges);*/
+  /*
+  
+  */
 
   //gettables from array;
 
   //gettables from section;
+  console.log(floorplan);
+  fetch("http://localhost:8003/api.php", {
+    method: "POST",
 
-  fetch("http://localhost:8000/admin/api/floorplan", { method: "POST" })
-    .then(response => {
-      console.log(response.json());
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(floorplan)
+  })
+    .then(response => {})
+    .catch(error => {});
 }
 
 function savetable(e, msg) {
@@ -234,16 +236,13 @@ var section = {
   color: ""
 };
 
-function sectionenter(ev) {
-  console.log("section enter", ev.dataTransfer.getData("text"));
-}
+function sectionenter(ev) {}
 function sectiondrop(ev) {
   let obj = selectedItem;
   if (!obj) {
     obj = document.getElementById(ev.dataTransfer.getData("text"));
   }
   if (!obj) {
-    console.log("invalid node");
     return; // trying to move an invalide node
   }
   if (obj.id == ev.target.id) return; //trying to move the same node ot itself;
@@ -267,7 +266,7 @@ function sectiondrop(ev) {
     ) {
       let movNode = obj.cloneNode(true);
       ev.currentTarget.appendChild(movNode);
-      console.log(movNode.parentElement);
+
       select(movNode);
       obj.remove();
       ev.preventDefault();
@@ -333,7 +332,6 @@ function savesection(event, msg) {
 }
 
 function setdefault(state) {
-  console.log("calling state");
   weekdays = document.querySelector(".weekdays");
   if (weekdays) {
     weekdays.style.pointerEvents = "";
@@ -399,7 +397,6 @@ var table = {
 };
 
 function setSectionColor(color) {
-  console.log("Setting Section color");
   if (
     selectedItem &&
     selectedItem.getAttribute("class").indexOf("section") > -1
@@ -412,7 +409,7 @@ function allowDrop(ev) {
 }
 
 function dragenter(ev) {
-  //console.log("drag enter",ev.target.getBoundingClientRect());
+  //
 }
 function tableforUi(id) {
   let searchedTable = null;
@@ -426,7 +423,6 @@ function tableforUi(id) {
 
 function findMergItemExist(id) {
   let itemfound = null;
-  console.log(id);
   mergingItems.forEach(mergeItem => {
     if (mergeItem.id == id) {
       itemfound = mergeItem;
@@ -436,7 +432,6 @@ function findMergItemExist(id) {
 }
 
 function select(ev) {
-  console.log("Select Called");
   if (ev.shiftKey) {
     // checking for multi select
     let mergingItem = null;
@@ -488,7 +483,6 @@ function select(ev) {
     });
     mergingItems = [];
   }
-
   if (ev.target) {
     let cls = ev.target.getAttribute("class");
     let txt = "dropdown-menudropdowndropdown-item";
@@ -596,8 +590,8 @@ function drop(ev) {
       obj = document.getElementById(data);
     }
   }
+
   if (selectedItem == null && obj == null) {
-    console.log("Object Error");
     return;
   }
   let container = tables;
@@ -630,11 +624,10 @@ function drop(ev) {
       });
     }
     if (!nodeCopy) {
-      console.log("Some error on node creation");
       return; // error condition for creation
     }
     nodeCopy.setAttribute("placed", true);
-    //console.log(nodeCopy);
+    //
     nodeCopy.style.position = "absolute";
 
     ev.target.appendChild(nodeCopy);
@@ -649,115 +642,14 @@ function drop(ev) {
   let pageY = ev.clientY;
   let offsetLeft = ev.target.getBoundingClientRect().left;
   let offsetTop = ev.target.getBoundingClientRect().top;
-  obj.style.top = pageY - offsetTop - obj.offsetHeight / 2 + "px";
-  +"px";
-  obj.style.left = pageX - offsetLeft - obj.offsetWidth / 2 + "px";
-  +"px";
+  let newTop = pageY - offsetTop - obj.offsetHeight / 2;
+  let newLeft = pageX - offsetLeft - obj.offsetWidth / 2;
+  if (newTop < 0) newTop = 0;
+  if (newLeft < 0) newLeft = 0;
+  obj.style.top = newTop + "px";
+  obj.style.left = newLeft + "px";
   select(obj);
   ev.preventDefault();
-}
-
-function rightmenu(event) {
-  //testGlobalFunction()
-  console.log("Right Menu Clicked");
-  let menu;
-
-  let top = "";
-  let left = "";
-  if (selectedItem && selectedItem.id.indexOf("sec") == -1) {
-    menu = document.querySelector(".rightmenutbl"); //load dynamically using event.target.type
-  } else {
-    menu = document.querySelector(".rightmenusection");
-  }
-
-  if (selectedItem && menu) {
-    if (!document.getElementById("m" + selectedItem.id)) {
-      let nm = menu.cloneNode(true);
-      if (!selectedItem.style.top && !selectedItem.style.left) {
-        if (selectedItem.parentElement.id == "content") {
-          top = selectedItem.parentElement.style.top.replace("px", "");
-          left =
-            parseInt(selectedItem.parentElement.style.left.replace("px", "")) +
-            35;
-        } else {
-          top = selectedItem.parentElement.style.top.replace("px", "");
-          left =
-            parseInt(selectedItem.parentElement.style.left.replace("px", "")) +
-            35;
-          let store = selectedItem.parentElement.parentElement;
-          if (store && store.id.indexOf("section") > -1) {
-            top =
-              parseInt(selectedItem.parentElement.style.top.replace("px", "")) +
-              parseInt(store.style.top.replace("px", ""));
-            left =
-              parseInt(
-                selectedItem.parentElement.style.left.replace("px", "")
-              ) +
-              parseInt(store.style.left.replace("px", "")) +
-              35;
-          }
-        }
-      } else {
-        top = selectedItem.style.top.replace("px", "");
-        left = parseInt(selectedItem.style.left.replace("px", "")) + 35;
-      }
-      nm.style.top = parseInt(top) + "px";
-      nm.style.left = parseInt(left) + "px";
-      nm.style.display = "block";
-      nm.id = "m" + selectedItem.id;
-      document.getElementById("content").appendChild(nm);
-      contextmenuSelected = nm;
-      contextmenuSelected.firstElementChild.focus();
-      if (selectedItem.getAttribute("class").indexOf("section") > -1) {
-        id = selectedItem.id.replace("section", "");
-        let sec;
-        sections.forEach(s => {
-          if (s.id == id) {
-            sec = s;
-          }
-        });
-        if (sec) {
-          let objs = contextmenuSelected.querySelectorAll("input");
-          objs.forEach(obj => {
-            obj.value = sec[obj.name];
-          });
-        }
-      }
-      if (selectedItem.getAttribute("class").indexOf("itable") > -1) {
-        let tblid = selectedItem.id.replace("newId", "");
-        let ctable;
-        tables.forEach(table => {
-          if (table.id == tblid) {
-            ctable = table;
-          }
-        });
-        let parentItem = selectedItem.parentElement;
-        if (
-          parentItem &&
-          parentItem.getAttribute("class").indexOf("section") > -1
-        ) {
-          id = parentItem.id.replace("section", "");
-          let sec;
-          sections.forEach(s => {
-            if (s.id == id) {
-              sec = s;
-            }
-          });
-          if (sec) {
-            let inputs = contextmenuSelected.querySelectorAll("input");
-            inputs.forEach(input => {
-              if (input.name == "name") {
-                input.value = sec.name;
-              } else {
-                input.value = ctable ? ctable[input.name] : "";
-              }
-            });
-          } // section s
-        }
-      }
-    }
-  }
-  return false;
 }
 
 document.addEventListener("keydown", event => {
