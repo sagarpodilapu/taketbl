@@ -39,6 +39,7 @@ class TakeTblParent extends React.Component {
     };
     let fnClick = function(event) {
       //event for saving the information
+      console.log("clicked");
       event.preventDefault();
       if (
         event.target.type === "button" &&
@@ -56,7 +57,6 @@ class TakeTblParent extends React.Component {
           self.handleClick(event);
         }
       } else {
-        console.log("44rr");
         document.removeEventListener("click", fnClick);
       }
     };
@@ -81,20 +81,65 @@ class TakeTblParent extends React.Component {
     document.addEventListener("contextmenu", function(event) {
       let test = event && event.target;
       if (!test) return;
+
       if (window.mergingItems && window.mergingItems.length > 0) {
+        console.log("merge items");
         document.addEventListener("click", fnClick);
-        let rightmenu = document.querySelector(".rightmenutbl");
+        // let rightmenu = document.querySelector(".rightmenutbl");
 
-        if (rightmenu) {
-          rightmenu = rightmenu.cloneNode(true);
-          rightmenu.id = "mergemenu";
-          rightmenu.style.block = "block";
+        // if (rightmenu) {
+        //   rightmenu = rightmenu.cloneNode(true);
+        //   rightmenu.id = "mergemenu";
+        //   rightmenu.style.block = "block";
 
-          if (!event.target.parentElement.querySelector("#mergemenu")) {
-            event.target.parentElement.appendChild(rightmenu);
-            rightmenu.style.top = "0px";
-            rightmenu.style.left = "0px";
+        //   if (!event.target.parentElement.querySelector("#mergemenu")) {
+        //     event.target.parentElement.appendChild(rightmenu);
+        //     rightmenu.style.top = "0px";
+        //     rightmenu.style.left = "0px";
+        //   }
+        // }
+        let obj = window.mergingItems[0];
+        let menu = null;
+        let menutype = obj.getAttribute("type");
+        let menus = document.querySelectorAll(menulist[menutype]);
+        menu = menus[0];
+        let top, left, parentTop, parentLeft, objTop, objLeft;
+        console.log(menus);
+        if (menu) {
+          let menuItem = document.getElementById("m" + obj.id);
+          console.log(menuItem);
+          if (!menuItem) {
+            let nm = menu.cloneNode(true);
+            nm.id = "m" + obj.id;
+            objTop = obj.style.top;
+            objLeft = obj.style.left;
+            if (obj.parentElement.id === "content") {
+              top = parseInt(obj.style.top.replace("px", "")) + "px";
+              left = parseInt(obj.style.left.replace("px", "")) + 35 + "px";
+            } else {
+              parentTop = obj.parentElement.style.top;
+              parentLeft = obj.parentElement.style.left;
+              top =
+                parseInt(objTop.replace("px", "")) +
+                parseInt(parentTop.replace("px", "")) +
+                "px";
+              left =
+                parseInt(objLeft.replace("px", "")) +
+                parseInt(parentLeft.replace("px", "")) +
+                35 +
+                "px";
+            }
+
+            nm.style.top = top;
+            nm.style.left = left;
+
+            nm.style.display = "block";
+            document.getElementById("content").appendChild(nm);
+            menuItem = nm;
+          } else {
           }
+          window.contextmenuSelected = menuItem;
+        } else {
         }
 
         return;
@@ -141,8 +186,7 @@ class TakeTblParent extends React.Component {
 
             nm.style.top = top;
             nm.style.left = left;
-            console.log(top);
-            console.log(left);
+
             nm.style.display = "block";
             document.getElementById("content").appendChild(nm);
             menuItem = nm;

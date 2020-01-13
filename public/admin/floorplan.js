@@ -6,6 +6,9 @@ var contextmenuSelected = null;
 var mergingItems = [];
 var mEvent = new Event("multiselect");
 var stopdrop;
+var restaurants = [];
+var restaurant = {};
+var loadedFloorplan = {};
 /* state fns */
 
 function getSelectedItem() {
@@ -91,7 +94,7 @@ function savefloorplan(msg) {
 
   //gettables from section;
   console.log(floorplan);
-  fetch("http://localhost:8003/api.php", {
+  fetch("http://localhost:8003/savefloorplan.php", {
     method: "POST",
 
     headers: {
@@ -99,6 +102,54 @@ function savefloorplan(msg) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(floorplan)
+  })
+    .then(response => {})
+    .catch(error => {});
+}
+
+function getRestaurants() {
+  console.log("get restaurants");
+  fetch("http://localhost:8003/getrestaurants.php", {
+    method: "GET",
+    dataType: "json"
+  })
+    .then(response => {
+      // console.log(JSON.parse(response));
+      return response.json();
+    })
+    .then(myJson => {
+      console.log(myJson);
+      restaurants = myJson;
+      return restaurants;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+function getRestaurant(id) {
+  fetch("http://localhost:8003/getrestaurant.php", {
+    method: "POST",
+
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ restaurant: id })
+  })
+    .then(response => {})
+    .catch(error => {});
+}
+
+function getFloorplan(id) {
+  fetch("http://localhost:8003/getfloorplan.php", {
+    method: "GET",
+
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ floorplan: id })
   })
     .then(response => {})
     .catch(error => {});
