@@ -22,12 +22,12 @@ class RestaurantInfo extends TakeTblParent {
   };
 
   componentWillMount() {
-    setInterval(timer, 1000);
-    function timer() {
-      this.setState({
-        count: (this.state.count -= 1) // mutating state directly here
-      });
-    }
+    // setInterval(timer, 1000);
+    // function timer() {
+    //   this.setState({
+    //     count: (this.state.count -= 1) // mutating state directly here
+    //   });
+    // }
   }
 
   render() {
