@@ -40,6 +40,10 @@ ul li {
   overflow: scorll;
 }
 
+.preview .tableth {
+  z-index: 1000;
+}
+
 /* The horizontal line on the top of the device*/
 .tablettop {
   content: "";

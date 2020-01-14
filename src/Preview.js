@@ -13,6 +13,10 @@ class Preview extends TakeTblParent {
       ru: {},
       be: {}
     };
+    this.state = {
+      ...this.state,
+      showPreview: false
+    };
   }
   handleMerge = event => {
     this.tab = "merge";
@@ -22,13 +26,20 @@ class Preview extends TakeTblParent {
     this.tab = "tables";
     this.setState({ tab: "table" });
   };
-  handleClick = event => {
+  handlePreviewBlur = event => {
+    this.setState({
+      showPreview: false
+    });
+  };
+  handlePreviewClick = event => {
+    console.log("clicked");
     let content = this.props.floorplan();
     this.setState({
       content: content,
       tables: this.props.tables(),
       sections: this.props.sections(),
-      tab: "table"
+      tab: "table",
+      showPreview: !this.state.showPreview
     });
   };
   render() {
@@ -78,104 +89,84 @@ class Preview extends TakeTblParent {
         <div className="dropdown">
           <button
             view="popup"
-            onClick={this.handleClick}
+            onClick={this.handlePreviewClick}
             className="btn btn-secondary dropdown-toggle"
             type="button"
-            id="dropdownMenu2"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
           >
             <i className="fas fa-search-plus"></i>
             {headers[lang].Preview}
           </button>
-          <div>
-            <div>
-              <div
-                className="dropdown-menu preview "
-                aria-labelledby="dropdownMenu2"
-                view="popup"
-              >
-                <form className="p-3 py-8" view="popup" noValidate>
-                  <div view="popup" className="form-group form-group-sm">
-                    <div className="tableth">
-                      <div className="tablettop"> </div>
-                      <div className="previewContainer">
-                        <div></div>
-                        <div className="previewheader">
-                          <div className="previewmenu">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                          </div>
-                          <div className="previewheading">{timeinfo}</div>
-                        </div>
-                        <div className="previewtab">
-                          <div
-                            className="previewfloorplan"
-                            dangerouslySetInnerHTML={content}
-                          ></div>
-                          <div className="previewbottom">
-                            <ul className="previewfloorarea">
-                              <li className="previewfloorareatab">bar</li>
-                              <li className="previewfloorareatab highlight">
-                                main
-                              </li>
-                              <li className="previewbf">breakfast - 80</li>
-                              <li className="previewln">lunch - 20 </li>
-                              <li className="previewdr">dinner - 120</li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div className="previewtablist">
-                          <div className="previewtablistheading">
-                            <div onClick={this.handleTables}>Tables</div>
-                            <div onClick={this.handleMerge}>Merge</div>
-                          </div>
-                          <div
-                            id="tables"
-                            className={
-                              this.tab === "tables"
-                                ? "table-responsive"
-                                : "previewhide"
-                            }
-                          >
-                            <table className="table table-sm table-borderless">
-                              <thead className="previewtablistvaluesheading">
-                                <tr>
-                                  <th>Sts</th>
-                                  <th>Sec</th>
-                                  <th>Tbl</th>
-                                  <th>Time</th>
-                                </tr>
-                              </thead>
-                              <tbody className="previewtablistvalues">
-                                {temptables.length > 0 &&
-                                  temptables.map(t => (
-                                    <tr className="Light" key={`light${t.id}`}>
-                                      <td key={`seats${t.id}`}>{t.seats}</td>
-                                      <td key={`section${t.id}`}>
-                                        {t.section}
-                                      </td>
-                                      <td key={`table${t.id}`}>{t.tableno}</td>
-                                      <td key={`date${t.id}`}>{t.date}</td>
-                                    </tr>
-                                  ))}
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="table-responsive previewhide">
-                            test
-                          </div>
-                        </div>
-                      </div>
-                      <div className="tabletround"></div>
+          {this.state.showPreview ? (
+            <div className="preview" view="popup">
+              <div className="tableth">
+                <div className="tablettop"> </div>
+                <div className="previewContainer">
+                  <div></div>
+                  <div className="previewheader">
+                    <div className="previewmenu">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                    <div className="previewheading">{timeinfo}</div>
+                  </div>
+                  <div className="previewtab">
+                    <div
+                      className="previewfloorplan"
+                      dangerouslySetInnerHTML={content}
+                    ></div>
+                    <div className="previewbottom">
+                      <ul className="previewfloorarea">
+                        <li className="previewfloorareatab">bar</li>
+                        <li className="previewfloorareatab highlight">main</li>
+                        <li className="previewbf">breakfast - 80</li>
+                        <li className="previewln">lunch - 20 </li>
+                        <li className="previewdr">dinner - 120</li>
+                      </ul>
                     </div>
                   </div>
-                </form>
+                  <div className="previewtablist">
+                    <div className="previewtablistheading">
+                      <div onClick={this.handleTables}>Tables</div>
+                      <div onClick={this.handleMerge}>Merge</div>
+                    </div>
+                    <div
+                      id="tables"
+                      className={
+                        this.tab === "tables"
+                          ? "table-responsive"
+                          : "previewhide"
+                      }
+                    >
+                      <table className="table table-sm table-borderless">
+                        <thead className="previewtablistvaluesheading">
+                          <tr>
+                            <th>Sts</th>
+                            <th>Sec</th>
+                            <th>Tbl</th>
+                            <th>Time</th>
+                          </tr>
+                        </thead>
+                        <tbody className="previewtablistvalues">
+                          {temptables.length > 0 &&
+                            temptables.map(t => (
+                              <tr className="Light" key={`light${t.id}`}>
+                                <td key={`seats${t.id}`}>{t.seats}</td>
+                                <td key={`section${t.id}`}>{t.section}</td>
+                                <td key={`table${t.id}`}>{t.tableno}</td>
+                                <td key={`date${t.id}`}>{t.date}</td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="table-responsive previewhide">test</div>
+                  </div>
+                </div>
+                <div className="tabletround"></div>
               </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     );
