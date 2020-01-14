@@ -17,8 +17,9 @@ class RestaurantInfo extends TakeTblParent {
         if (typeof window !== undefined) {
             let pathname = window.location.pathname;
             let rId = pathname.split("/")[1];
+            let fId = 1; //dummy
             await fetch(
-                `https://dummyapi-sidabs.herokuapp.com/getrestaurants.php/?id=${rId}`,
+                `https://dummyapi-sidabs.herokuapp.com/getrestaurants.php/?id=${rId}&fId=${fId}`,
                 {
                     method: "GET",
                     dataType: "json"

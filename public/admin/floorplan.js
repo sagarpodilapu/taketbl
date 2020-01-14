@@ -102,8 +102,8 @@ function savefloorplan(msg) {
             method: "POST",
 
             headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
+                Accept: "application/json"
+                // "Content-Type": "application/json"
             },
             body: JSON.stringify(floorplan)
         }
@@ -147,7 +147,7 @@ function getRestaurants() {
 }
 
 function getFloorplan(id) {
-    fetch("https://dummyapi-sidabs.herokuapp.com/getfloorplan.php", {
+    fetch(`https://dummyapi-sidabs.herokuapp.com/getfloorplan.php?id=${id}`, {
         method: "GET",
 
         headers: {
@@ -156,8 +156,12 @@ function getFloorplan(id) {
         },
         body: JSON.stringify({ floorplan: id })
     })
-        .then(response => {})
-        .catch(error => {});
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
 function savetable(e, msg) {
