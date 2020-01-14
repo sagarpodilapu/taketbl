@@ -123,7 +123,6 @@ function getRestaurants(id) {
     )
         .then(response => {
             response.json().then(data => {
-                console.log(data);
                 results.push(data);
             });
         })
@@ -133,15 +132,15 @@ function getRestaurants(id) {
     return results;
 }
 
-function getRestaurant(id) {
+function getRestaurants() {
     fetch("https://dummyapi-sidabs.herokuapp.com/getrestaurant.php", {
-        method: "POST",
+        method: "GET",
 
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ restaurant: id })
+        }
+        // body: JSON.stringify({ restaurant: id })
     })
         .then(response => {})
         .catch(error => {});

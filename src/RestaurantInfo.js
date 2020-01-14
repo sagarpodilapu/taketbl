@@ -17,10 +17,21 @@ class RestaurantInfo extends TakeTblParent {
         if (typeof window !== undefined) {
             let pathname = window.location.pathname;
             let rId = pathname.split("/")[1];
-            let results = await this.props.getRestaurants(rId);
-            this.setState({
-                restaurants: results
-            });
+            await fetch(
+                `https://dummyapi-sidabs.herokuapp.com/getrestaurants.php/?id=${rId}`,
+                {
+                    method: "GET",
+                    dataType: "json"
+                }
+            )
+                .then(response => {
+                    response.json().then(data => {
+                        this.setState({ restaurants: data });
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
     handleChange = selectedOption => {
@@ -103,13 +114,13 @@ class RestaurantInfo extends TakeTblParent {
                             <Select
                                 value={this.state.selectedOption}
                                 onChange={this.handleChange}
-                                options={options}
+                                options={restaurants}
                             />
                         </td>
                     </tr>
                     <tr>
                         <td>{headers[lang].Name}:</td>
-                        <td>{restaurants}</td>
+                        {/* <td>{restaurants}</td> */}
                     </tr>
                     <tr>
                         <td>{headers[lang].Phone}:</td>
