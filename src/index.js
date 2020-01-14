@@ -14,65 +14,66 @@ import SectionMenu from "./SectionMenu";
 import Preview from "./Preview";
 
 import * as serviceWorker from "./serviceWorker";
+
 ReactDOM.render(
-  <RestaurantInfo getRestaurants={window.getRestaurants} language={"en"} />,
-  document.getElementById("RestaurantBlock")
+    <RestaurantInfo getRestaurants={window.getRestaurants} language={"en"} />,
+    document.getElementById("RestaurantBlock")
 );
 ReactDOM.render(
-  <FloorPlanInfo language={"en"} />,
-  document.getElementById("FloorPlanInfoBlock")
+    <FloorPlanInfo language={"en"} />,
+    document.getElementById("FloorPlanInfoBlock")
 );
 ReactDOM.render(
-  <FloorPlan
-    language={"en"}
-    saveFloorPlan={window.savefloorplan}
-    setWeekday={window.setweekday}
-    setDefault={window.setdefault}
-  />,
-  document.getElementById("FloorPlanBlock")
+    <FloorPlan
+        language={"en"}
+        saveFloorPlan={window.savefloorplan}
+        setWeekday={window.setweekday}
+        setDefault={window.setdefault}
+    />,
+    document.getElementById("FloorPlanBlock")
 );
 ReactDOM.render(
-  <TakeTableDate headerText={"StartDate"} />,
-  document.getElementById("startdate")
+    <TakeTableDate headerText={"StartDate"} />,
+    document.getElementById("startdate")
 );
 ReactDOM.render(
-  <TakeTableDate headerText={"EndDate"} />,
-  document.getElementById("enddate")
+    <TakeTableDate headerText={"EndDate"} />,
+    document.getElementById("enddate")
 );
 ReactDOM.render(
-  <TableMenu savetable={window.savetable} />,
-  document.getElementById("tablemenu")
+    <TableMenu savetable={window.savetable} />,
+    document.getElementById("tablemenu")
 );
 ReactDOM.render(
-  <MergeMenu savetable={window.savetable} />,
-  document.getElementById("mergemenu")
+    <MergeMenu savetable={window.savetable} />,
+    document.getElementById("mergemenu")
 );
 ReactDOM.render(
-  <SectionMenu savesection={window.savesection} />,
-  document.getElementById("sectionmenu")
+    <SectionMenu savesection={window.savesection} />,
+    document.getElementById("sectionmenu")
 );
 ReactDOM.render(
-  <ToolBox drag={window.drag} />,
-  document.getElementById("toolbox")
+    <ToolBox drag={window.drag} />,
+    document.getElementById("toolbox")
 );
 ReactDOM.render(
-  <Content
-    selecteditem={window.getSelectedItem}
-    select={window.select}
-    drop={window.drop}
-    dragenter={window.dragenter}
-    allowDrop={window.allowDrop}
-  />,
-  document.getElementById("tablettop")
+    <Content
+        selecteditem={window.getSelectedItem}
+        select={window.select}
+        drop={window.drop}
+        dragenter={window.dragenter}
+        allowDrop={window.allowDrop}
+    />,
+    document.getElementById("tablettop")
 );
 ReactDOM.render(<Color />, document.getElementById("color"));
 ReactDOM.render(
-  <Preview
-    floorplan={window.getcontent}
-    tables={window.gettables}
-    sections={window.getsections}
-  />,
-  document.getElementById("preview")
+    <Preview
+        floorplan={window.getcontent}
+        tables={window.gettables}
+        sections={window.getsections}
+    />,
+    document.getElementById("preview")
 );
 //tablemenu
 //ReactDOM.render(<ContextMenu/>,document.getElementById('root'));
